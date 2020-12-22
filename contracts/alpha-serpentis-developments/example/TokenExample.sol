@@ -6,11 +6,13 @@ import "../ERC677/ERC677.sol";
 
 contract TokenExample is ERC677 {
 
-    constructor(string memory _name, string memory _symbol, uint8 _decimals) ERC677(_name, _symbol) {
-        _setupDecimals(_decimals);
+    constructor(address _mintTo, uint256 _amount) ERC677("ERC677", "677") {
+        _mint(address(_mintTo), _amount);
+        _setupDecimals(0);
+    }
+    
+    function mint(address _to, uint256 _amount) public {
+        _mint(_to, _amount);
     }
 
-    function transferAndCall(address _receiver, uint256 _amount, bytes memory _data) public override returns(bool success) {
-
-    }
 }
