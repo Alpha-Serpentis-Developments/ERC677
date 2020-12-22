@@ -10,8 +10,6 @@ ERC20 implementation is from [OpenZeppelin v3.3](https://github.com/OpenZeppelin
 
 # Notice
 
-This implementation is **incomplete**.
-
 Use the implementation at your own risk! The implementation written has not been audited and extensively tested.
 
 # Support
