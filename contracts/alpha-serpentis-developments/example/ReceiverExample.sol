@@ -18,7 +18,11 @@ contract ReceiverExample is ERC677Receiver {
     address private payTo;
     uint256 private feePercentage;
     
-    event ERC677Received(address _from, address _token, uint256 _amount);
+    event ERC677Received(
+        address _from, 
+        address _token, 
+        uint256 _amount
+    );
     
     constructor(address _payTo, uint256 _feePercentage) {
         require(_payTo != address(0));
@@ -28,22 +32,46 @@ contract ReceiverExample is ERC677Receiver {
         feePercentage = _feePercentage;
     }
 
-    function onTokenTransfer(address _from, uint256 _amount, bytes memory _data) public override returns(bool success) {
+    function onTokenTransfer(
+        address _from, 
+        uint256 _amount, 
+        bytes memory _data
+    ) 
+        public 
+        override 
+        returns(bool success) 
+    {
         ERC677 tokenReceived = ERC677(msg.sender);
         // Split the amount
-        tokenReceived.transferAndCall(payTo, _amount.mul(feePercentage).div(100), "");
+        tokenReceived.transferAndCall(
+            payTo, 
+            _amount.mul(feePercentage).div(100), 
+            ""
+        );
         
         emit ERC677Received(_from, msg.sender, _amount);
         return true;
     }
-    function letReceiverSendTo(address _token, address _to) public {
+    function letReceiverSendTo(
+        address _token, 
+        address _to
+    ) 
+        public 
+    {
         require(_to != address(0));
         ERC677 token = ERC677(_token);
-        try token.transferAndCall(_to, token.balanceOf(address(this)), "") {
+        try token.transferAndCall(
+            _to, 
+            token.balanceOf(address(this)), 
+            ""
+            ) {
             return; // successful
         } catch {
             ERC20 tokenFallback; // assume ERC677-incompatible; use ERC20
-            tokenFallback.transfer(_to, token.balanceOf(address(this)));
+            tokenFallback.transfer(
+                _to, 
+                token.balanceOf(address(this))
+            );
         }
     }
 

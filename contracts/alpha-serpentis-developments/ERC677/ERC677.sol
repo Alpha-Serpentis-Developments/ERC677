@@ -7,7 +7,15 @@ import "../../openzeppelin/token/ERC20/ERC20.sol";
 contract ERC677 is ERC20 {
     constructor(string memory _name, string memory _symbol) ERC20(_name, _symbol) {}
 
-    function transferAndCall(address _receiver, uint256 _amount, bytes memory _data) public virtual returns(bool success) {
+    function transferAndCall(
+        address _receiver, 
+        uint256 _amount, 
+        bytes memory _data
+    ) 
+        public 
+        virtual 
+        returns(bool success) 
+    {
         require(super.transfer(_receiver, _amount), "ERC20.transfer(): transfer() returned false"); // Call ERC20 transfer() method, returns a bool
         
         // Check if _receiver is a contract
@@ -16,7 +24,13 @@ contract ERC677 is ERC20 {
         //    _receiver.call(abi.encodeWithSignature(("onTokenTransfer(address,uint256,bytes)"), _receiver, _amount, _data));
         // }
 
-        (bool result,) = _receiver.call(abi.encodeWithSignature(("onTokenTransfer(address,uint256,bytes)"), _receiver, _amount, _data));
+        (bool result,) = _receiver.call(abi.encodeWithSignature(
+            ("onTokenTransfer(address,uint256,bytes)"), 
+            _receiver, 
+            _amount, 
+            _data
+            )
+        );
 
         return true; // The return value is unclear on how to be used.
     }
