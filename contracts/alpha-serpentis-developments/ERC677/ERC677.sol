@@ -32,7 +32,7 @@ contract ERC677 is ERC20 {
             )
         );
 
-        return true; // The return value is unclear on how to be used.
+        return result; // The return value is unclear on how to be used -- decided to use the result.
     }
 
     /**
